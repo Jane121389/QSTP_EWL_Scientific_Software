@@ -173,9 +173,9 @@ Theta-dependent $P_D$ curves near zero and does not reproduce the article.
 To reproduce the supplied article panels exactly:
 
 - Standard panel: $\Phi=\pi$, curves ordered
-  $\Theta=\pi/2,\,2\pi/5,\,3\pi/10$.
+  $\Theta=\pi/2,2\pi/5,3\pi/10$.
 - Complementary panel: $\Phi=0$, curves ordered
-  $\Theta=19\pi/30,\,17\pi/30,\,\pi/2$.
+  $\Theta=19\pi/30,17\pi/30,\pi/2$.
 
 The order is important because the article uses black for the upper curve,
 dark gray for the middle curve, and light gray for the lower curve.
