@@ -1,128 +1,185 @@
-
 # QSTP–EWL Scientific Software
 
-Research software for the doctoral-thesis analysis of the Quantum Sure Thing Principle in the quantum Prisoner's Dilemma.
+Research software for reproducing and extending the analysis of the **Quantum Sure Thing Principle (QSTP)** in the **Eisert–Wilkens–Lewenstein (EWL) quantum Prisoner's Dilemma**.
 
-## Included entanglers
+The package reproduces the published results of our *Physica Scripta* article and provides additional analyses developed for the associated Ph.D. thesis, including global violation metrics, robustness studies, parameter-space exploration, and comparisons between perfect entanglers.
 
-- Original EWL operator $J(\gamma)$
-- CNOT perfect entangler.
-- dCNOT perfect entangler.
-- B-gate perfect entangler.
+---
 
-## Article reproduction
+# Features
+
+- Reproduces all published figures from the associated journal article.
+- Implements the original EWL entangler and three perfect entanglers.
+- Evaluates standard and complementary QSTP violations.
+- Generates publication-quality figures.
+- Performs global parameter-space analyses.
+- Computes normalized violation volumes and robustness metrics.
+- Estimates critical purity and entanglement thresholds.
+- Exports reproducible CSV and NPZ datasets.
+
+---
+
+# Installation
+
+Clone the repository and install it in editable mode:
 
 ```bash
+git clone https://github.com/your_username/QSTP_EWL_Scientific_Software_FINAL.git
+cd QSTP_EWL_Scientific_Software_FINAL
 pip install -e .
+```
+
+---
+
+# Included entanglers
+
+The software supports the following entangling operators:
+
+- Original EWL operator $J(\gamma)$
+- CNOT perfect entangler
+- dCNOT perfect entangler
+- B-gate perfect entangler
+
+---
+
+# Article reproduction
+
+Run
+
+```bash
 python experiments/reproduce_article.py
 ```
 
 This generates:
 
-- `Fig5_original_EWL`: standard and complementary original-EWL panels;
-- `Fig6_perfect_standard`: CNOT and dCNOT standard-QSTP panels;
-- `Fig7_perfect_complementary`: CNOT, dCNOT and B-gate complementary-QSTP panels.
+- `Fig5_original_EWL`
+- `Fig6_perfect_standard`
+- `Fig7_perfect_complementary`
 
-The original-EWL reproduction uses $\Phi=\pi$. Theta-dependent curves are rendered in black and gray tones. Perfect-entangler presets follow the parameter pairs and phase labels reported in the article figures.
+The implementation reproduces the results reported in:
 
-The article cited is **"Entanglement-Induced Violations of the Quantum Sure-Thing Principle in the Quantum Prisoners’ Dilemma"**, published in *Physica Scripta*. The paper demonstrates that quantum entanglement can induce violations of the *Quantum Sure-Thing Principle* in the quantum Prisoner's Dilemma, highlighting the fundamental role of quantum correlations in modifying decision-making processes. **DOI:** 10.1088/1402-4896/ae16e8.
+> **Entanglement-Induced Violations of the Quantum Sure-Thing Principle in the Quantum Prisoners’ Dilemma**  
+> *Physica Scripta*  
+> DOI: **10.1088/1402-4896/ae16e8**
 
+The software reproduces both the original EWL panels and the perfect-entangler analyses using the same parameter conventions reported in the publication.
 
-## Thesis-impact analyses
+---
+
+# Figure 5 reproduction
+
+The original article uses different phase conventions for the two EWL panels.
+
+### Standard panel
+
+- $\Phi=\pi$
+- $\Theta=\{\pi/2,\;2\pi/5,\;3\pi/10\}$
+
+### Complementary panel
+
+- $\Phi=0$
+- $\Theta=\{19\pi/30,\;17\pi/30,\;\pi/2\}$
+
+The implementation follows the same ordering and grayscale convention used in the published figures.
+
+Standalone exports are also generated:
+
+```text
+figures/article/Fig5a_EWL_standard.png
+figures/article/Fig5b_EWL_complementary.png
+```
+
+---
+
+# Extended thesis analyses
+
+The software includes analyses that extend the published article.
+
+Run
 
 ```bash
 python experiments/thesis_global.py
 ```
 
-Generated results include:
+Generated outputs include
 
-1. global interaction between purity and entanglement;
-2. phase–uncertainty maps for all entanglers;
-3. quantitative ranking of entanglers by maximum violation;
-4. reusable NPZ and CSV datasets.
+- global interaction between purity and entanglement;
+- phase–uncertainty maps;
+- quantitative comparison of entanglers;
+- reusable CSV and NPZ datasets.
 
-Use `--full` for denser grids:
+For denser parameter grids:
 
 ```bash
 python experiments/thesis_global.py --full
 ```
-The thesis cited is: **"Dinámica de decisiones y juegos en sistemas
-cuánticos entrelazados"*
 
-## Tests
+---
 
-```bash
-pytest
-```
+# Impact metrics
 
-## Scientific scope
-
-The package is deliberately specific to the thesis question: identifying when quantum resources modify or violate the standard and complementary QSTP. It avoids unrelated payoff and tournament analyses.
-
-
-## Impact metrics for the thesis
-
-The extended program includes three global analyses that go beyond representative curves:
+Global quantitative analyses can be generated with
 
 ```bash
 python experiments/impact_metrics.py
 ```
 
-For denser Monte-Carlo and conditional-profile estimates:
+or
 
 ```bash
 python experiments/impact_metrics.py --full
 ```
 
-### Normalized violation volume
+The implemented metrics include:
 
-The software estimates the fraction of a declared uniform parameter domain
-that violates the standard or complementary QSTP. It reports a Wilson 95%
-confidence interval, maximum violation, mean intensity conditioned on
-violation, and a weighted volume combining extension and intensity.
+## Normalized violation volume
 
-Because a volume depends on the selected domain and measure, the program
-stores those assumptions explicitly in `ParameterDomain`.
+The software estimates the fraction of a declared parameter domain that violates the standard or complementary QSTP.
 
-### Critical purity and entanglement
+Reported quantities include
 
-The program constructs conditional volume profiles:
+- violation fraction;
+- Wilson 95% confidence interval;
+- weighted violation volume;
+- mean violation intensity;
+- maximum violation point.
 
-- $\mathcal V(R)$ for every entangler;
-- $\mathcal V(\gamma)$ for the original EWL operator.
+The assumed sampling domain is explicitly stored in `ParameterDomain`.
 
-The reported critical value is operational: the first sampled value at which
-the estimated violating fraction reaches 0.5%. This threshold can be changed
-in `experiments/impact_metrics.py`.
+---
 
-### Robustness to parameter perturbations
+## Critical purity and entanglement
 
-Around representative violating configurations, all applicable parameters are
-simultaneously perturbed. The perturbation radius is expressed as a fraction
-of each parameter's full physical range. The outputs are:
+Conditional violation profiles are constructed for
 
-- probability that the violation survives;
-- mean remaining violation intensity;
-- standard deviation of the intensity.
+- $\mathcal{V}(R)$ for every entangler;
+- $\mathcal{V}(\gamma)$ for the original EWL operator.
 
-### New output figures
+The reported critical value is the first sampled point whose violating fraction exceeds the selected operational threshold.
 
-- `T04_violation_volume`
-- `T05_critical_purity_entanglement`
-- `T06_parameter_robustness`
+---
 
-Numerical results are exported to CSV and compressed NPZ files.
+## Robustness analysis
 
+Representative violating configurations are perturbed simultaneously in every physical parameter.
 
-## Generate all thesis figures
+The software reports
 
-The dedicated thesis pipeline is:
+- survival probability;
+- remaining mean violation intensity;
+- standard deviation of the violation.
+
+---
+
+# Generate all thesis figures
+
+The complete pipeline is
 
 ```bash
 python experiments/generate_thesis_figures.py
 ```
 
-It generates, in `figures/thesis/`:
+This produces
 
 - `T04_violation_volume`
 - `T05_critical_purity_entanglement`
@@ -130,60 +187,42 @@ It generates, in `figures/thesis/`:
 - `T07_phase_theta_comparison`
 - `T08_strategy_plane_global`
 
-Use denser grids and larger Monte-Carlo samples with:
+For higher-resolution figures:
 
 ```bash
 python experiments/generate_thesis_figures.py --full
 ```
 
-The article figures remain available through:
+---
+
+# Tests
+
+Run
 
 ```bash
-python experiments/reproduce_article.py
+pytest
 ```
 
-## Standalone original-EWL article panels
+---
 
-The article reproduction now also exports both original-EWL panels separately:
+# Scientific scope
 
-```text
-figures/article/Fig5a_EWL_standard.png
-figures/article/Fig5b_EWL_complementary.png
-```
+This software focuses specifically on identifying when quantum resources modify or violate the standard and complementary **Quantum Sure Thing Principle (QSTP)** within the EWL quantum Prisoner's Dilemma.
 
-The complementary panel reproduces the supplied EWL $(- , +)$ image with
-$t_A=-0.25$, $t_B=0.3$, $R=1$, $\Phi=\pi$, and
-$\Theta\in\{\pi/2,17\pi/30,19\pi/30\}$. The three $P_D$ curves use
-black and gray tones and the region above $P_D=1/2$ is shaded green.
+It is intentionally dedicated to this research problem and does not include unrelated payoff optimization or tournament analyses.
 
+---
 
-## Phase convention used to reproduce Figure 5
+# Citation
 
-The two panels require different phase values:
+If this software contributes to your research, please cite the associated Ph.D. thesis and the following publication:
 
-- Standard QSTP panel: $\Phi=\pi$.
-- Complementary QSTP panel: $\Phi=0$.
+> **Entanglement-Induced Violations of the Quantum Sure-Thing Principle in the Quantum Prisoners’ Dilemma**  
+> *Physica Scripta*  
+> DOI: **10.1088/1402-4896/ae16e8**
 
-Using $\Phi=\pi$ in the complementary panel incorrectly places the
-Theta-dependent $P_D$ curves near zero and does not reproduce the article.
+---
 
-
-## Final Figure 5 phase and curve-order convention
-
-To reproduce the supplied article panels exactly:
-
-- Standard panel: $\Phi=\pi$, curves ordered
-  $\Theta=\pi/2,2\pi/5,3\pi/10$.
-- Complementary panel: $\Phi=0$, curves ordered
-  $\Theta=19\pi/30,17\pi/30,\pi/2$.
-
-The order is important because the article uses black for the upper curve,
-dark gray for the middle curve, and light gray for the lower curve.
-
-## Citation
-
-If you use this repository in your research, please cite the corresponding Ph.D. thesis and any related publications.
-
-## License
+# License
 
 This project is released for academic and research purposes.
