@@ -24,8 +24,8 @@ The package reproduces the published results of our *Physica Scripta* article an
 Clone the repository and install it in editable mode:
 
 ```bash
-git clone https://github.com/your_username/QSTP_EWL_Scientific_Software_FINAL.git
-cd QSTP_EWL_Scientific_Software_FINAL
+git clone https://github.com/your_username/QSTP_EWL_Scientific_Software.git
+cd QSTP_EWL_Scientific_Software
 pip install -e .
 ```
 
